@@ -1,0 +1,13 @@
+Project 'ConsoleApp1' has the following package references
+   [net9.0]: 
+   Top-level Package                   Requested   Resolved
+   > Microsoft.ML.OnnxRuntime          1.16.0      1.16.0  
+   > SixLabors.ImageSharp              3.1.11      3.1.11  
+   > SixLabors.ImageSharp.Drawing      2.1.7       2.1.7   
+   > System.Numerics.Tensors           0.1.0       0.1.0   
+
+   Transitive Package                      Resolved
+   > Microsoft.ML.OnnxRuntime.Managed      1.16.0  
+   > SixLabors.Fonts                       2.1.3   
+   > System.Memory                         4.5.5   
+

@@ -1,0 +1,47 @@
+Custom ignore
+ConsoleApp1/data
+
+Visual Studio
+.vs/
+*.suo
+*.user
+*.pdb
+*.suo
+*.ncb
+*.resource
+*.opensdf
+*.sdf
+*.tlog
+*.log
+
+Build artifacts
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bin/
+obj/
+artifacts/
+
+NuGet packages
+packages/
+*.nupkg
+*.zip
+
+Visual Studio Code
+.vscode/
+
+Other temporary files
+*.bak
+*.tmp
+*.log
+*.err
+*.cache
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.out
+*.so
