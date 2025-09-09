@@ -11,13 +11,16 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Drawing;
 using SixLabors.Fonts;
 
-const string imagePath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/data/catdogperson.jpg";
-const string modelPath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/onnx_models/yolov8n.onnx";
+// const string imagePath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/data/catdogperson.jpg";
+const string imagePath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/data/Cam0_Conver_20250807_140030_A-Square--TL-XTR.jpg";
+const string modelPath = "/Users/nontawatwuttikam/cp-meji/yolo_models/cp-meji-box-align-gripping/weights/best.onnx";
+// const string modelPath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/onnx_models/yolov8n.onnx";
 // input will be fit into inputSize x inputSize with padding
-const int inputSize = 1280;
+const int inputSize = 640;
 const float nmsThreshold = 0.45f;
-const float confidenceThreshold = 0.4f;
+const float confidenceThreshold = 0.7f;
 const bool saveImage = true;
+const bool isOutputNormalized = false; // is output normalized to [0,1]? // true for yolov8n false for meji
 
 // ----------------- Image Preprocessing -----------------
 using Image<Rgb24> image = Image.Load<Rgb24>(imagePath);
@@ -127,10 +130,18 @@ var finalDetections = NmsHelper.NonMaxSuppression(detections, nmsThreshold  );
 
 foreach (var d in finalDetections)
 {
-    d.X1 = d.X1 * inputSize / newScale;
-    d.Y1 = d.Y1 * inputSize / newScale;
-    d.X2 = d.X2 * inputSize / newScale;
-    d.Y2 = d.Y2 * inputSize / newScale;
+    if (isOutputNormalized)
+    {
+        d.X1 = d.X1 * inputSize;
+        d.Y1 = d.Y1 * inputSize;
+        d.X2 = d.X2 * inputSize;
+        d.Y2 = d.Y2 * inputSize;
+    }
+
+    d.X1 = d.X1 / newScale;
+    d.Y1 = d.Y1 / newScale;
+    d.X2 = d.X2 / newScale;
+    d.Y2 = d.Y2 / newScale;
 
     Console.WriteLine($"Class={d.ClassId}, Score={d.Score}, " +
                       $"BBox=({d.X1},{d.Y1},{d.X2},{d.Y2})" +
@@ -144,15 +155,16 @@ if (saveImage)
     {
         foreach (var d in finalDetections)
         {
+            int pixelSize = (int)(originalWidth * 0.005);
             var rect = new RectangleF(d.X1, d.Y1, d.X2 - d.X1, d.Y2 - d.Y1);
-            ctx.Draw(Color.Red, 2, rect);
+            ctx.Draw(Color.Red, pixelSize, rect);
 
             var text = $"Class {d.ClassId} ({d.Score:P2})";
-            var font = SystemFonts.CreateFont("Arial", 16);
+            var font = SystemFonts.CreateFont("Arial", pixelSize * 3);
             var textSize = TextMeasurer.MeasureSize(text, new TextOptions(font));
             var textPosition = new PointF(d.X1, d.Y1 - textSize.Height
     );
-            ctx.DrawText(text, font, Color.White, textPosition);
+            ctx.DrawText(text, font, Color.Green, textPosition);
         }
     });
 
