@@ -13,7 +13,7 @@ using SixLabors.Fonts;
 
 const string imagePath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/data/catdogperson.jpg";
 const string modelPath = "/Users/nontawatwuttikam/ConsoleApp1/ConsoleApp1/onnx_models/yolov8n.onnx";
-// Beware, USE STRETCH RESIZE MODE
+// input will be fit into inputSize x inputSize with padding
 const int inputSize = 1280;
 const float nmsThreshold = 0.45f;
 const float confidenceThreshold = 0.4f;
